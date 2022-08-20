@@ -3,6 +3,10 @@ name = "ethereum-crypto"
 version = "0.1.0"
 edition = "2021"
 description = "Basic functionality for ethereum private-public key pairs and addresses"
+repository = "https://github.com/AndoroidX/ethereum-crypto"
+authors = ["Andrii Tretyakov <andrii@tretyakov.xyz>"]
+readme = "README.md"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
