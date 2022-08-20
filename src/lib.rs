@@ -79,7 +79,7 @@ mod tests {
     #[test]
     #[should_panic]
     fn from_secret_key_string_0() {
-        EthereumKeypair::from_secret_key_string("this is not a private key".to_string()).unwrap();
+        EthereumKeypair::from_secret_key_string("this is not a private key, probably".to_string()).unwrap();
     }
 
     #[test]
