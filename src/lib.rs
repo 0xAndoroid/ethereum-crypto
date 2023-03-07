@@ -4,9 +4,9 @@ use secp256k1::{PublicKey, SecretKey};
 use secp256k1::rand::{thread_rng};
 
 pub struct EthereumKeypair {
-    secret_key: SecretKey,
-    public_key: PublicKey,
-    address: EthereumAddress
+    pub secret_key: SecretKey,
+    pub public_key: PublicKey,
+    pub address: EthereumAddress,
 }
 
 pub struct EthereumAddress([u8;20]);

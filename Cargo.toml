@@ -1,6 +1,6 @@
 [package]
 name = "ethereum-crypto"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 description = "Basic functionality for ethereum private-public key pairs and addresses"
 repository = "https://github.com/AndoroidX/ethereum-crypto"
