@@ -63,6 +63,14 @@ impl EthereumKeypair {
         &self.address
     }
 
+    pub fn get_secret_key(&self) -> &SecretKey {
+        &self.secret_key
+    }
+
+    pub fn get_public_key(&self) -> &PublicKey {
+        &self.public_key
+    }
+
     pub fn export_secret_key_as_hex_string(&self) -> String {
         self.secret_key.display_secret().to_string()
     }
