@@ -21,6 +21,13 @@ impl ToString for EthereumAddress {
     }
 }
 
+#[cfg(feature = "ethereum-types")]
+impl EthereumAddress {
+    pub fn as_h160(self) -> ethereum_types::H160 {
+        ethereum_types::H160(self.0)
+    }
+}
+
 impl EthereumKeypair {
     pub fn from_secret_key_str(private_key: &str) -> Result<Self, Error> {
         let trimmed = match private_key.strip_prefix("0x") {

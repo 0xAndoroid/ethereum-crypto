@@ -1,6 +1,6 @@
 [package]
 name = "ethereum-crypto"
-version = "0.1.2"
+version = "0.2.0"
 edition = "2021"
 description = "Public-private key management system for Ethereum"
 repository = "https://github.com/AndoroidX/ethereum-crypto"
@@ -10,8 +10,12 @@ license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+ethereum-types = ["dep:ethereum-types"]
+
 [dependencies]
 secp256k1 = {version = "^0.21", features = ["global-context", "rand", "rand-std"]}
 sha3 = "0.10.2"
 hex = "0.4.3"
 thiserror = "^1.0"
+ethereum-types = {version = "0.12.1", optional = true}
