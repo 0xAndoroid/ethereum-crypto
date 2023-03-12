@@ -1,5 +1,7 @@
 pub mod utils;
+pub mod error;
 
+use error::Error;
 use secp256k1::{PublicKey, SecretKey};
 use secp256k1::rand::{thread_rng};
 
@@ -20,31 +22,28 @@ impl ToString for EthereumAddress {
 }
 
 impl EthereumKeypair {
-    pub fn from_secret_key_string(private_key: String) -> Result<Self, String> {
+    pub fn from_secret_key_str(private_key: &str) -> Result<Self, Error> {
         let trimmed = match private_key.strip_prefix("0x") {
             Some(t) => t,
-            None => private_key.as_str()
+            None => private_key
         };
         if trimmed.len() != 64 {
-            return Err("Incorrect private key length".to_string())
+            return Err(Error::SecretKeyLenMismatch)
         }
-        let decoded = match hex::decode(trimmed) {
-            Ok(t) => t,
-            Err(e) => return Err(e.to_string())
-        };
+        let decoded = hex::decode(trimmed)?;
         if decoded.len() != 32 {
-            return Err("Incorrect private key length".to_string())
+            return Err(Error::SecretKeyLenMismatch);
         }
-        Ok(Self::from_secret_key(&decoded[0..32]))
+        Ok(Self::from_secret_key(&decoded[0..32])?)
     }
 
-    pub fn from_secret_key(x: &[u8]) -> Self {
-        let secret_key = SecretKey::from_slice(x).expect("Provided invalid private key.");
-        let public_key = secret_key.public_key(secp256k1::SECP256K1);
+    pub fn from_secret_key(x: &[u8]) -> Result<Self, Error> {
+        let secret_key = SecretKey::from_slice(x)?;
+        let public_key = PublicKey::from_secret_key(secp256k1::SECP256K1, &secret_key);
         let address = utils::get_address_from_public_key(&public_key);
-        Self {
-            secret_key, public_key, address: EthereumAddress(address.try_into().expect("Wrong address length"))
-        }
+        Ok(Self {
+            secret_key, public_key, address: EthereumAddress(address.try_into().unwrap())
+        })
     }
 
     pub fn generate_new<T : secp256k1::rand::Rng + ?Sized>(rng_core: &mut T) -> Self {
@@ -87,13 +86,13 @@ mod tests {
     #[test]
     #[should_panic]
     fn from_secret_key_string_0() {
-        EthereumKeypair::from_secret_key_string("this is not a private key, probably".to_string()).unwrap();
+        EthereumKeypair::from_secret_key_str("this is not a private key, probably").unwrap();
     }
 
     #[test]
     fn from_secret_key_string_1() {
-        let key = EthereumKeypair::from_secret_key_string(
-            "742a504d9674cf3c3a6f2ade3b3780660559209ee45279c230a534ca35187b9e".to_string()
+        let key = EthereumKeypair::from_secret_key_str(
+            "742a504d9674cf3c3a6f2ade3b3780660559209ee45279c230a534ca35187b9e"
         ).unwrap();
         assert_eq!(
             key.export_secret_key_as_hex_string(),
