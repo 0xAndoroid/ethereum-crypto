@@ -2,7 +2,7 @@
 name = "ethereum-crypto"
 version = "0.1.2"
 edition = "2021"
-description = "Basic functionality for ethereum private-public key pairs and addresses"
+description = "Public-private key management system for Ethereum"
 repository = "https://github.com/AndoroidX/ethereum-crypto"
 authors = ["Andrii Tretyakov <andrii@tretyakov.xyz>"]
 readme = "README.md"
@@ -11,6 +11,7 @@ license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-secp256k1 = {version = "0.26.0", features = ["global-context", "rand", "rand-std"]}
+secp256k1 = {version = "^0.21", features = ["global-context", "rand", "rand-std"]}
 sha3 = "0.10.2"
 hex = "0.4.3"
+thiserror = "^1.0"
